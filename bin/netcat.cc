@@ -46,5 +46,5 @@ void run(TcpStreamPtr stream) {
         }
         ::exit(0);
     });
-
+    char buf[8192];
 }
