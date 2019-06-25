@@ -30,3 +30,21 @@ int write_n(int fd, const void* buf, int length) {
     }
     return written;
 }
+
+void run(TcpStreamPtr stream) {
+    std::thread thr([&stream] () {
+        // 8KB of data
+        char buf[8192];
+        // keep track of data read from socket
+        int nr = 0;
+        while ( (nr = stream->receiveSome(buf, sizeof(buf))) > 0 ) {
+            // write to stdout
+            int nw = write_n(STDOUT_FILENO, buf, nr);
+            if (nw < nr) {
+                break;
+            }
+        }
+        ::exit(0);
+    });
+
+}
